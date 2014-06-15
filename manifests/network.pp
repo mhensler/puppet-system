@@ -8,7 +8,7 @@ class system::network (
 ) {
   if $hostname {
     validate_string($hostname)
-    if ! is_ip_address($gateway) {
+    if ($gateway) and !is_ip_address($gateway) {
       fail('system::network::gateway must be an IP address')
     }
     validate_bool($ipv6)
