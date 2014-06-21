@@ -116,6 +116,12 @@ class system (
     require => Class['::system::groups'],
   }
 
+  class { '::system::ssh_user_keys':
+    config  => $config['ssh_user_keys'],
+    stage   => second,
+    require => [Class['::system::users'], Class['::system::groups']],
+  }
+
   class { '::system::users::realize':
     users   => $config['realize_users'],
     stage   => second,
