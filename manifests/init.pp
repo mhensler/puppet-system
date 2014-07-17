@@ -91,10 +91,6 @@ class system (
     config => $config['services'],
   }
 
-  class { '::system::sshd':
-    config => $config['sshd'],
-  }
-
   class { '::system::sysconfig':
     config => $config['sysconfig'],
   }
