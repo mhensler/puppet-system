@@ -34,10 +34,6 @@ class system (
     stage  => last,
   }
 
-  class { '::system::facts':
-    config => $config['facts'],
-  }
-
   class { '::system::files':
     config => $config['files'],
     stage  => third,
