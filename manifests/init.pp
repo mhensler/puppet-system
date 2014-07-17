@@ -41,12 +41,12 @@ class system (
 
   class { '::system::groups':
     config => $config['groups'],
-    stage  => second
+    stage  => first, 
   }
 
   class { '::system::groups::realize':
     groups  => $config['realize_groups'],
-    stage   => second,
+    stage   => first,
     require => Class['::system::groups'],
   }
 
@@ -67,7 +67,9 @@ class system (
     stage  => last,
   }
 
-  include '::system::network'
+  class { '::system::network':
+    stage  => first,
+  }
 
   class { '::system::packages':
     config  => $config['packages'],
@@ -108,19 +110,19 @@ class system (
 
   class { '::system::users':
     config  => $config['users'],
-    stage   => second,
+    stage   => first,
     require => Class['::system::groups'],
   }
 
   class { '::system::ssh_user_keys':
     config  => $config['ssh_user_keys'],
-    stage   => second,
+    stage   => first,
     require => [Class['::system::users'], Class['::system::groups']],
   }
 
   class { '::system::users::realize':
     users   => $config['realize_users'],
-    stage   => second,
+    stage   => first,
     require => Class['::system::users', '::system::groups::realize'],
   }
 
