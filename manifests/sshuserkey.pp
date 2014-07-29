@@ -1,6 +1,5 @@
 define system::sshuserkey (
     $gid             = $title,
-    $ssh_key_type    = 'rsa',
     $home            = undef,
     $ssh_private_key = undef,
     $ssh_public_key  = undef,
@@ -25,12 +24,25 @@ define system::sshuserkey (
             mode    => '0700',
         }
 
+        # Remove newlines and spaces from an OpenSSH formatted public key.
+        $ssh_public_key_pattern = '^ssh-(\S+)\s(.+)\s(\S+)$'
+        $ssh_key_type = chomp(
+            regsubst($ssh_public_key, $ssh_public_key_pattern, '\1', 'M'))
+        $ssh_public_key_value = chomp(
+            regsubst($ssh_public_key, $ssh_public_key_pattern, '\2', 'M'))
+        $ssh_public_key_id = 
+            regsubst($ssh_public_key, $ssh_public_key_pattern, '\3', 'M')
+        $ssh_public_key_value_no_spaces = 
+            regsubst($ssh_public_key_value, '\s', '', 'GM')
+        $_ssh_public_key = 
+            "ssh-${ssh_key_type} ${ssh_public_key_value_no_spaces} ${ssh_public_key_id}"
+
         file { "${ssh_dir}/id_${ssh_key_type}.pub":
             ensure  => file,
             owner   => $name,
             group   => $gid,
             mode    => '0644',
-            content => $ssh_public_key,
+            content => $_ssh_public_key,
             require => File[$ssh_dir],
         }
 
