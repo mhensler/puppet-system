@@ -4,9 +4,16 @@
 #
 # === Parameters
 #
+# [*system::yumrepos::defaults*]
 # None.
 #
 # === Variables
+#
+# [*system::yumrepos::files*]
+#   Hash of hashes defining files that should be created in the same stage
+#   as the yumrepos. This can be used to install certificates needed to
+#   access the yum repositories. This is necessary because system::files
+#   is executed after the yum repositories are first used.
 #
 # [*system::yumrepos::defaults*]
 #   Hash containing the default values that are used for all yumrepos that
@@ -37,14 +44,21 @@
 #
 class system::yumrepos () {
 
-  $defaults = hiera_hash('system::yumrepos::defaults', {
+  $yumrepos_files = hiera_hash('system::yumrepos::files', undef)
+  if $yumrepos_files {
+    create_resources(file, $yumrepos_files, {
+      ensure => present,
+    })
+  }
+
+  $yumrepos_defaults = hiera_hash('system::yumrepos::defaults', {
     enabled  => '1',
     gpgcheck => '1',
   })
 
-  $hiera_config = hiera_hash('system::yumrepos', undef)
-  if $hiera_config {
-    create_resources(yumrepo, $hiera_config, $defaults)
+  $yumrepos = hiera_hash('system::yumrepos', undef)
+  if $yumrepos {
+    create_resources(yumrepo, $yumrepos, $yumrepos_defaults)
   }
 
 }
