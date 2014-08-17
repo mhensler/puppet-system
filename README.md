@@ -262,7 +262,7 @@ Example configuration:
     system::network::global::hostname:   'puppet.domain.com'
     system::network::global::gateway:    '10.7.0.1'
     system::network::global::gatewaydev: 'eth0'
-    system::network::global::nisdomain:  'false'
+    system::network::global::nisdomain:  'domain.com'
     system::network::global::vlan:       'yes'
     system::network::global::nozeroconf: 'yes'
 
@@ -276,14 +276,14 @@ Example configuration:
     system::network::if::static:
       eth0:
         ensure:    up
-        ipaddress: '10.7.96.21'
-        netmask:   '255.255.240.0'
+        ipaddress: '10.7.0.10'
+        netmask:   '255.255.255.0'
 
     system::network::route:
       eth0:
-        address: '10.0.0.0' 
-        netmask: '255.0.0.0'
-        gateway: '10.16.0.250'
+        address: '192.168.0.0' 
+        netmask: '255.255.0.0'
+        gateway: '10.7.0.2'
 
 Note: network configuration requires the
 [razorsedge/network](https://forge.puppetlabs.com/razorsedge/network) module.
