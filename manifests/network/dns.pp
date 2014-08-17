@@ -1,27 +1,30 @@
 class system::network::dns (
-  $config = undef,
+  $nameserver = [],
+  $domain     = '',
+  $search     = [],
+  $sortlist   = [],
+  $options    = [],
 ) {
-  if $config {
-    validate_hash($config)
-    $_config = $config
-  }
-  else {
-    $_config = hiera_hash('system::network::dns', undef)
-  }
-  if $_config {
-    $domains     = $_config['domains']
-    $nameservers = $_config['nameservers']
-    validate_array($domains)
-    validate_array($nameservers)
+
+  if $nameserver and !empty($nameserver) {
+
+    validate_array($nameserver)
+    validate_string($domain)
+    validate_array($search)
+    validate_array($sortlist)
+    validate_array($options)
+
+    if ! empty($domain) and ! empty($search) {
+      fail('The "domain" and "search" parameters are mutually exclusive.')
+    }
+
     file { '/etc/resolv.conf':
-      ensure  => 'present',
+      ensure  => file,
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => template('system/network/dns.erb'),
+      content => template('system/resolv.conf.erb'),
     }
   }
+
 }
-#system::network::dns:
-#  nameservers: [ '10.7.96.2'  ]
-#  domains:     [ 'domain.com' ]

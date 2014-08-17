@@ -66,8 +66,21 @@ class system (
     stage  => last,
   }
 
-  class { '::system::network':
+  class { '::system::network::global':
     stage  => first,
+  }
+
+  class { '::system::network::dns':
+    stage  => first,
+  }
+
+  class { '::system::network::interfaces':
+    stage  => first,
+  }
+
+  class { '::system::network::route':
+    stage   => first,
+    require => Class['::system::network::interfaces'],
   }
 
   class { '::system::packages':
