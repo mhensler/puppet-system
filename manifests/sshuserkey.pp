@@ -30,11 +30,11 @@ define system::sshuserkey (
             regsubst($ssh_public_key, $ssh_public_key_pattern, '\1', 'M'))
         $ssh_public_key_value = chomp(
             regsubst($ssh_public_key, $ssh_public_key_pattern, '\2', 'M'))
-        $ssh_public_key_id = 
+        $ssh_public_key_id =
             regsubst($ssh_public_key, $ssh_public_key_pattern, '\3', 'M')
-        $ssh_public_key_value_no_spaces = 
+        $ssh_public_key_value_no_spaces =
             regsubst($ssh_public_key_value, '\s', '', 'GM')
-        $_ssh_public_key = 
+        $_ssh_public_key =
             "ssh-${ssh_key_type} ${ssh_public_key_value_no_spaces} ${ssh_public_key_id}"
 
         file { "${ssh_dir}/id_${ssh_key_type}.pub":
@@ -54,13 +54,8 @@ define system::sshuserkey (
             content => $ssh_private_key,
             require => File[$ssh_dir],
         }
-
-        # Autorequire the user if it is managed by Puppet.
-        # NOTE: This will automatically realize the User
-        #       if it is virtual.
-        #File[$ssh_dir] -> User <| title == "$name" |>
     } else {
-        notify { "Both ssh_public_key and ssh_private_key need to be 
+        notify { "Both ssh_public_key and ssh_private_key need to be
                   defined for user ${name}":}
     }
 }
