@@ -1,7 +1,7 @@
 class system::network::route () {
 
   $route = hiera_hash('system::network::route', undef)
-  if $routes {
+  if $route {
     create_resources('network::route', $route)
   }
 
