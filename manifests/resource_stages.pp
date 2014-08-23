@@ -8,6 +8,90 @@
 #
 # === Parameters
 #
+# [*augeas*]
+#   Run stage for augeas.
+#
+# [*crontabs*]
+#   Run stage for crontabs.
+#
+# [*dns*]
+#   Run stage for dns.
+#
+# [*execs*]
+#   Run stage for execs.
+#
+# [*files*]
+#   Run stage for files.
+#
+# [*groups*]
+#   Run stage for groups.
+#
+# [*groups_realize*]
+#   Run stage for groups_realize.
+#
+# [*hosts*]
+#   Run stage for hosts.
+#
+# [*limits*]
+#   Run stage for limits.
+#
+# [*mail*]
+#   Run stage for mail.
+#
+# [*mounts*]
+#   Run stage for mounts.
+#
+# [*network_global*]
+#   Run stage for network_global.
+#
+# [*network_interfaces*]
+#   Run stage for network_interfaces.
+#
+# [*network_route*]
+#   Run stage for network_route.
+#
+# [*packages*]
+#   Run stage for packages.
+#
+# [*providers*]
+#   Run stage for providers.
+#
+# [*resources*]
+#   Run stage for resources.
+#
+# [*schedules*]
+#   Run stage for schedules.
+#
+# [*selbooleans*]
+#   Run stage for selbooleans.
+#
+# [*services*]
+#   Run stage for services.
+#
+# [*ssh_user_keys*]
+#   Run stage for ssh_user_keys.
+#
+# [*sysconfig*]
+#   Run stage for sysconfig.
+#
+# [*sysctl*]
+#   Run stage for sysctl.
+#
+# [*templates*]
+#   Run stage for templates.
+#
+# [*users*]
+#   Run stage for users.
+#
+# [*users_realize*]
+#   Run stage for users_realize.
+#
+# [*yumgroups*]
+#   Run stage for yumgroups.
+#
+# [*yumrepos*]
+#   Run stage for yumrepos.
+#
 # === Authors
 #
 # Andrew Kroh <andy@crowbird.com>
