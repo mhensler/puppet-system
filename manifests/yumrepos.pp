@@ -12,8 +12,9 @@
 # [*system::yumrepos::files*]
 #   Hash of hashes defining files that should be created in the same stage
 #   as the yumrepos. This can be used to install certificates needed to
-#   access the yum repositories. This is necessary because system::files
-#   is executed after the yum repositories are first used.
+#   access the yum repositories or GPG keys needed to verify the RPMs. This
+#   is necessary because system::files is executed after the yum repositories
+#   are first used.
 #
 # [*system::yumrepos::defaults*]
 #   Hash containing the default values that are used for all yumrepos that
