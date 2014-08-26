@@ -1,3 +1,37 @@
+0.8.2:
+
+* Added system::yumrepos::files for installing SSL keys and GPG keys.
+
+* Added system::yumrepos::defaults to control the defaults for yumrepos.
+
+0.8.1:
+
+* Enhanced sshuserkey.pp to allow public key to be split accross multiple
+lines in a YAML file.
+
+0.8.0:
+
+* Removed NTP support. Use puppetlabs/ntp module directly.
+
+* Removed system::facts. The facts.d plugin is now part of Puppet.
+
+* Removed system::sshd.
+
+* Removed schedule parameter from all types. It was causing warnings.
+
+* Added system::resources type.
+
+* Added system::ssh_user_keys type.
+
+* Changed system::network::gateway to an optional parameter.
+
+* Changed stages of several types.
+    group:         second -> first
+    realize_group: second -> first
+    network:       main   -> first
+    users:         second -> first
+    users_realize: second -> first
+
 0.7.4:
 
 * Documentation fixes
