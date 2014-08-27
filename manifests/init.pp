@@ -12,7 +12,7 @@ class system () {
   }
 
   class { 'system::network::dns':
-    stage => $::system::resource_stages::dns,
+    stage => $system::resource_stages::dns,
   }
 
   class { 'system::execs':
