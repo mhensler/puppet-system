@@ -4,7 +4,6 @@
 #
 # === Parameters
 #
-# [*system::yumrepos::defaults*]
 # None.
 #
 # === Variables
