@@ -1,3 +1,50 @@
+# == Class: system::network::interfaces
+#
+# Manages network interfaces. This class acts bridge between Hiera and
+# the network module. It reads the configuration from Hiera and creates
+# the resources defined in the configuration.
+#
+# === Variables
+#
+# [*system::network::if::static*]
+#   Hash of hashes defining resources that will be created using
+#   ::network::if::static.
+#
+# [*system::network::if::dynamic*]
+#   Hash of hashes defining resources that will be created using
+#   ::network::if::dynamic.
+#
+# [*system::network::if::bridge*]
+#   Hash of hashes defining resources that will be created using
+#   ::network::if::bridge.
+#
+# [*system::network::alias*]
+#   Hash of hashes defining resources that will be created using
+#   ::network::alias.
+#
+# [*system::network::alias::range*]
+#   Hash of hashes defining resources that will be created using
+#   ::network::alias::range.
+#
+# [*system::network::bond::static*]
+#   Hash of hashes defining resources that will be created using
+#   ::network::bond::static.
+#
+# [*system::network::bond::dynamic*]
+#   Hash of hashes defining resources that will be created using
+#   ::network::bond::dynamic.
+#
+# [*system::network::bond::slave*]
+#   Hash of hashes defining resources that will be created using
+#   ::network::bond::slave.
+#
+# [*system::network::bridge::static*]
+#   Hash of hashes defining resources that will be created using
+#   ::network::bridge::static.
+#
+# [*system::network::bridge::dynamic*]
+#   Hash of hashes defining resources that will be created using
+#   ::network::bridge::dynamic.
 class system::network::interfaces () {
 
   $static = hiera_hash('system::network::if::static', undef)
@@ -20,7 +67,7 @@ class system::network::interfaces () {
     create_resources('network::alias', $alias)
   }
 
-  $alias_range = hiera_hash('system::network::alias_range', undef)
+  $alias_range = hiera_hash('system::network::alias::range', undef)
   if ($alias_range) {
     create_resources('network::alias::range', $alias_range)
   }

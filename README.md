@@ -263,10 +263,9 @@ Example configuration:
     system::network::global::gateway:    '10.7.0.1'
     system::network::global::gatewaydev: 'eth0'
     system::network::global::nisdomain:  'domain.com'
-    system::network::global::vlan:       'yes'
     system::network::global::nozeroconf: 'yes'
 
-    system::network::dns::nameserver:
+    system::network::dns::nameservers:
       - '10.7.96.2'
       - '10.7.96.3'
     system::network::dns::search:

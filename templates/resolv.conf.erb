@@ -8,8 +8,8 @@ domain <%= @domain %>
 <% if !@options.empty? -%>
 options <%= @options.join(' ') %>
 <% end -%>
-<% @nameserver.each do |ns| -%>
-nameserver <%= ns %>
+<% @nameservers.each do |ns| -%>
+nameservers <%= ns %>
 <% end -%>
 <% if !@sortlist.empty? -%>
 sortlist <%= @sortlist.join(' ') %>
