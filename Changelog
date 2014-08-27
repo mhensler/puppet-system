@@ -1,5 +1,7 @@
 0.9.0:
 
+* Made all run stages configurable using system::resource_stages.
+
 * Modified system::network::dns to support all /etc/resolv.conf parameters.
 Note: if you are currently using the DNS feature then you must update your
 heira DNS configuration to match the new parameters.
