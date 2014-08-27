@@ -9,7 +9,7 @@ domain <%= @domain %>
 options <%= @options.join(' ') %>
 <% end -%>
 <% @nameservers.each do |ns| -%>
-nameservers <%= ns %>
+nameserver <%= ns %>
 <% end -%>
 <% if !@sortlist.empty? -%>
 sortlist <%= @sortlist.join(' ') %>
