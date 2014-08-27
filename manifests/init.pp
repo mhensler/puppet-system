@@ -1,156 +1,125 @@
-class system (
-  $config   = {},
-) {
-  # Ensure that files and directories are created before
-  # other resources (like mounts) that may depend on them
-  if ! defined(Stage['third']) {
-    stage { 'third': before => Stage['main'] }
-  }
-  # Ensure packages, users and groups are created
-  # before other resources that may depend on them
-  if ! defined(Stage['second']) {
-    stage { 'second': before => Stage['third'] }
-  }
-  # Ensure providers are set before resources are created
-  if ! defined(Stage['first']) {
-    stage { 'first':  before => Stage['second'] }
-  }
-  # Things to do last because the depend on lots of other resources
-  if ! defined(Stage['last']) {
-    stage { 'last': require => Stage['main'] }
+class system () {
+
+  include system::stages
+  include system::resource_stages
+
+  class { 'system::augeas':
+    stage => $system::resource_stages::augeas,
   }
 
-  class { '::system::augeas':
-    config => $config['augeas'],
+  class { 'system::crontabs':
+    stage => $system::resource_stages::crontabs,
   }
 
-  class { '::system::crontabs':
-    config => $config['crontabs'],
+  class { 'system::network::dns':
+    stage => $system::resource_stages::dns,
   }
 
-  class { '::system::execs':
-    config => $config['execs'],
-    stage  => last,
+  class { 'system::execs':
+    stage => $system::resource_stages::execs,
   }
 
-  class { '::system::files':
-    config => $config['files'],
-    stage  => third,
+  class { 'system::files':
+    stage => $system::resource_stages::files,
   }
 
-  class { '::system::groups':
-    config => $config['groups'],
-    stage  => first, 
+  class { 'system::groups':
+    stage => $system::resource_stages::groups,
   }
 
-  class { '::system::groups::realize':
-    groups  => $config['realize_groups'],
-    stage   => first,
-    require => Class['::system::groups'],
+  class { 'system::groups::realize':
+    stage   => $system::resource_stages::groups_realize,
+    require => Class['system::groups'],
   }
 
-  class { '::system::hosts':
-    config => $config['hosts'],
+  class { 'system::hosts':
+    stage => $system::resource_stages::hosts,
   }
 
-  class { '::system::limits':
-    config => $config['limits'],
+  class { 'system::limits':
+    stage => $system::resource_stages::limits,
   }
 
-  class { '::system::mail':
-    config => $config['mail'],
+  class { 'system::mail':
+    stage => $system::resource_stages::mail,
   }
 
-  class { '::system::mounts':
-    config => $config['mounts'],
-    stage  => last,
+  class { 'system::mounts':
+    stage => $system::resource_stages::mounts,
   }
 
-  class { '::system::network::global':
-    stage  => first,
+  class { 'system::network::global':
+    stage => $system::resource_stages::network_global,
   }
 
-  class { '::system::network::dns':
-    stage  => first,
+  class { 'system::network::interfaces':
+    stage => $system::resource_stages::network_interfaces,
   }
 
-  class { '::system::network::interfaces':
-    stage  => first,
-  }
-
-  class { '::system::network::route':
-    stage   => first,
+  class { 'system::network::route':
+    stage   => $system::resource_stages::network_route,
     require => Class['::system::network::interfaces'],
   }
 
-  class { '::system::packages':
-    config  => $config['packages'],
-    stage   => second,
-    require => Class['::system::yumgroups'],
+  class { 'system::packages':
+    stage   => $system::resource_stages::packages,
+    require => Class['system::yumgroups'],
   }
 
-  class { '::system::schedules':
-    config => $config['schedules'],
-    stage  => first,
+  class { 'system::providers':
+    stage => $system::resource_stages::providers,
   }
 
-  class { '::system::selbooleans':
-    config => $config['selbooleana'],
-    stage  => first,
+  class { 'system::resources':
+    stage => $system::resource_stages::resources,
   }
 
-  class { '::system::services':
-    config => $config['services'],
+  class { 'system::schedules':
+    stage => $system::resource_stages::schedules,
   }
 
-  class { '::system::sysconfig':
-    config => $config['sysconfig'],
+  class { 'system::selbooleans':
+    stage => $system::resource_stages::selbooleans,
   }
 
-  class { '::system::sysctl':
-    config => $config['sysctl'],
+  class { 'system::services':
+    stage => $system::resource_stages::services,
   }
 
-  class { '::system::templates':
-    config => $config['templates'],
-    stage  => last,
+  class { 'system::ssh_user_keys':
+    stage   => $system::resource_stages::ssh_user_keys,
+    require => [Class['system::users'], Class['system::groups']],
   }
 
-  class { '::system::users':
-    config  => $config['users'],
-    stage   => first,
-    require => Class['::system::groups'],
+  class { 'system::sysconfig':
+    stage => $system::resource_stages::sysconfig,
   }
 
-  class { '::system::ssh_user_keys':
-    config  => $config['ssh_user_keys'],
-    stage   => first,
-    require => [Class['::system::users'], Class['::system::groups']],
+  class { 'system::sysctl':
+    stage => $system::resource_stages::sysctl,
   }
 
-  class { '::system::users::realize':
-    users   => $config['realize_users'],
-    stage   => first,
-    require => Class['::system::users', '::system::groups::realize'],
+  class { 'system::templates':
+    stage => $system::resource_stages::templates,
   }
 
-  class { '::system::yumgroups':
-    config => $config['yumgroups'],
-    stage  => second,
+  class { 'system::users':
+    stage   => $system::resource_stages::users,
+    require => Class['system::groups'],
   }
 
-  class { '::system::yumrepos':
-    stage   => first,
-    require => Class['::system::schedules'],
+  class { 'system::users::realize':
+    stage   => $system::resource_stages::users_realize,
+    require => Class['system::users', 'system::groups::realize'],
   }
 
-  class { '::system::providers':
-    config => $config['providers'],
-    stage  => first
+  class { 'system::yumgroups':
+    stage => $system::resource_stages::yumgroups,
   }
 
-  class { '::system::resources':
-    config => $config['resources'],
-    stage  => third
+  class { 'system::yumrepos':
+    stage   => $system::resource_stages::yumrepos,
+    require => Class['system::schedules'],
   }
+
 }
