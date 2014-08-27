@@ -33,6 +33,8 @@ http://forge.puppetlabs.com/domcleal/augeasproviders.
 
 For limits see http://forge.puppetlabs.com/erwbgy/limits.
 
+For network see http://forge.puppetlabs.com/razorsedge/network.
+
 ## Usage
 
 Include the system module in your puppet configuration:
@@ -246,25 +248,44 @@ point directories have a chance to be created first.
 
 ## network
 
-Configure basic networking: set hostname, enable/disable zeroconf/IPv6, set the default route,
-configure interfaces and their static routes, configure nameserver resolvers and domains
+Configure Red Hat/Fedora network configuration. 
+
+It can configure the following files:
+
+* /etc/resolv.conf
+* /etc/sysconfig/network
+* /etc/sysconfig/networking-scripts/route-*
+* /etc/sysconfig/networking-scripts/ifcfg-*
 
 Example configuration:
 
-    system::network::hostname: 'puppet.domain.com'
-    system::network::gateway:  '10.7.0.1'
-    system::network::ipv6:     'false'
-    system::network::zeroconf: 'false'
-    system::network::dns:
-      nameservers: [ '10.7.96.2', '10.7.96.2' ]
-      domains:     [ 'domain.com', 'sub.domain.com' ]
-    system::network::interfaces:
+    system::network::global::hostname:   'puppet.domain.com'
+    system::network::global::gateway:    '10.7.0.1'
+    system::network::global::gatewaydev: 'eth0'
+    system::network::global::nisdomain:  'domain.com'
+    system::network::global::nozeroconf: 'yes'
+
+    system::network::dns::nameservers:
+      - '10.7.96.2'
+      - '10.7.96.3'
+    system::network::dns::search:
+      - domain.com
+      - sub.domain.com
+
+    system::network::if::static:
       eth0:
-        ipaddress: '10.7.96.21'
-        netmask:   '255.255.240.0'
-        routes:
-          '10.0.0.0/8':
-            via: '10.16.0.250'
+        ensure:    up
+        ipaddress: '10.7.0.10'
+        netmask:   '255.255.255.0'
+
+    system::network::route:
+      eth0:
+        address: '192.168.0.0' 
+        netmask: '255.255.0.0'
+        gateway: '10.7.0.2'
+
+Note: network configuration requires the
+[razorsedge/network](https://forge.puppetlabs.com/razorsedge/network) module.
 
 ## packages
 

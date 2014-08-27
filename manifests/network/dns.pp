@@ -1,27 +1,55 @@
+# == Class: system::network::dns
+#
+# Manages DNS configuration. This class manages the contents of the
+# /etc/resolv.conf file.
+#
+# === Parameters
+#
+# [*nameservers*]
+#   Array of nameserver IP addresses. This class will not modify any
+#   configuration if this parameter is undefined or empty.
+#
+# [*domain*]
+#   Local domain name. Optional. This parameter cannot be used with
+#   search.
+#
+# [*search*]
+#   Array of search domains to use of for hostname lookup. Optional.
+#   This parameter cannot be used with domain.
+#
+# [*sortlist*]
+#   Array of IP address-netmask pairs to use in sorting results from
+#   the resolver. Optional.
+#
+# [*options*]
+#   Array of options to pass to the resolver. Optional.
 class system::network::dns (
-  $config = undef,
+  $nameservers = [],
+  $domain      = '',
+  $search      = [],
+  $sortlist    = [],
+  $options     = [],
 ) {
-  if $config {
-    validate_hash($config)
-    $_config = $config
-  }
-  else {
-    $_config = hiera_hash('system::network::dns', undef)
-  }
-  if $_config {
-    $domains     = $_config['domains']
-    $nameservers = $_config['nameservers']
-    validate_array($domains)
+
+  if $nameservers and !empty($nameservers) {
+
     validate_array($nameservers)
+    validate_string($domain)
+    validate_array($search)
+    validate_array($sortlist)
+    validate_array($options)
+
+    if !empty($domain) and !empty($search) {
+      fail('The "domain" and "search" parameters are mutually exclusive.')
+    }
+
     file { '/etc/resolv.conf':
-      ensure  => 'present',
+      ensure  => file,
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => template('system/network/dns.erb'),
+      content => template('system/resolv.conf.erb'),
     }
   }
+
 }
-#system::network::dns:
-#  nameservers: [ '10.7.96.2'  ]
-#  domains:     [ 'domain.com' ]

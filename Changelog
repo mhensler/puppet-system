@@ -1,3 +1,13 @@
+0.9.0:
+
+* Modified system::network::dns to support all /etc/resolv.conf parameters.
+Note: if you are currently using the DNS feature then you must update your
+heira DNS configuration to match the new parameters.
+
+* Incorporated razorsedge/network for managing network interface configuration.
+Note: if you were using system::network:interfaces you must update your
+heira configuration to match the new parameters.
+
 0.8.2:
 
 * Added system::yumrepos::files for installing SSL keys and GPG keys.

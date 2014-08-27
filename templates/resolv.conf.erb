@@ -1,0 +1,16 @@
+# File managed by Puppet
+<% if !@search.empty? -%>
+search <%= @search.join(' ') %>
+<% end -%>
+<% if !@domain.empty? -%>
+domain <%= @domain %>
+<% end -%>
+<% if !@options.empty? -%>
+options <%= @options.join(' ') %>
+<% end -%>
+<% @nameservers.each do |ns| -%>
+nameservers <%= ns %>
+<% end -%>
+<% if !@sortlist.empty? -%>
+sortlist <%= @sortlist.join(' ') %>
+<% end -%>
