@@ -53,12 +53,12 @@ class system () {
   }
 
   class { 'system::network::interfaces':
-    stage => $system::resource_stages::network_interfaces,
+    stage   => $system::resource_stages::network_interfaces,
+    require => Class['::system::network::route'],
   }
 
   class { 'system::network::route':
-    stage   => $system::resource_stages::network_route,
-    require => Class['::system::network::interfaces'],
+    stage => $system::resource_stages::network_route,
   }
 
   class { 'system::packages':
