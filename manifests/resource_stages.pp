@@ -68,6 +68,9 @@
 # [*services*]
 #   Run stage for services.
 #
+# [*ssh_authorized_keys*]
+#   Run stage for ssh_authorized_keys.
+#
 # [*ssh_user_keys*]
 #   Run stage for ssh_user_keys.
 #
@@ -117,6 +120,7 @@ class system::resource_stages (
   $schedules          = first,
   $selbooleans        = first,
   $services           = main,
+  $ssh_authorized_keys= first,
   $ssh_user_keys      = first,
   $sysconfig          = main,
   $sysctl             = main,
@@ -149,6 +153,7 @@ class system::resource_stages (
   validate_re($schedules, $valid_stages)
   validate_re($selbooleans, $valid_stages)
   validate_re($services, $valid_stages)
+  validate_re($ssh_authorized_keys, $valid_stages)
   validate_re($ssh_user_keys, $valid_stages)
   validate_re($sysconfig, $valid_stages)
   validate_re($sysctl, $valid_stages)
