@@ -86,6 +86,11 @@ class system () {
     stage => $system::resource_stages::services,
   }
 
+  class { 'system::ssh_authorized_keys':
+    stage   => $system::resource_stages::ssh_authorized_keys,
+    require => [Class['system::users'], Class['system::groups']],
+  }
+
   class { 'system::ssh_user_keys':
     stage   => $system::resource_stages::ssh_user_keys,
     require => [Class['system::users'], Class['system::groups']],
