@@ -74,6 +74,9 @@
 # [*ssh_user_keys*]
 #   Run stage for ssh_user_keys.
 #
+# [*sshd*]
+#   Run stage for sshd.
+#
 # [*sysconfig*]
 #   Run stage for sysconfig.
 #
@@ -122,6 +125,7 @@ class system::resource_stages (
   $services           = main,
   $ssh_authorized_keys= first,
   $ssh_user_keys      = first,
+  $sshd               = main,
   $sysconfig          = main,
   $sysctl             = main,
   $templates          = last,
@@ -155,6 +159,7 @@ class system::resource_stages (
   validate_re($services, $valid_stages)
   validate_re($ssh_authorized_keys, $valid_stages)
   validate_re($ssh_user_keys, $valid_stages)
+  validate_re($sshd, $valid_stages)
   validate_re($sysconfig, $valid_stages)
   validate_re($sysctl, $valid_stages)
   validate_re($templates, $valid_stages)

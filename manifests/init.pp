@@ -96,6 +96,10 @@ class system () {
     require => [Class['system::users'], Class['system::groups']],
   }
 
+  class { 'system::sshd':
+    stage => $system::resource_stages::sshd,
+  }
+  
   class { 'system::sysconfig':
     stage => $system::resource_stages::sysconfig,
   }
