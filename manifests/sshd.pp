@@ -1,20 +1,16 @@
 class system::sshd (
   $config   = undef,
-  $system_schedule = 'always',
   $sync_host_keys = true
 ) {
-  $defaults = {
-    schedule => $system_schedule,
-  }
   if $config {
     include augeasproviders
-    create_resources(sshd_config, $config, $defaults)
+    create_resources(sshd_config, $config)
   }
   else {
     $hiera_config = hiera_hash('system::sshd', undef)
     if $hiera_config {
       include augeasproviders
-      create_resources(sshd_config, $hiera_config, $defaults)
+      create_resources(sshd_config, $hiera_config)
     }
   }
   if $sync_host_keys {
